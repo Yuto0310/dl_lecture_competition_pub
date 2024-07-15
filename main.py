@@ -63,7 +63,7 @@ def process_text(text):
 
 # 1. データローダーの作成
 class VQADataset(torch.utils.data.Dataset):
-    def __init__(self, df_path, image_dir, transform=None, answer=True):
+    def __init__(self, df_path, image_dir, transform=None, answer=True, ):
         self.transform = transform  # 画像の前処理
         self.image_dir = image_dir  # 画像ファイルのディレクトリ
         self.df = pandas.read_json(df_path)  # 画像ファイルのパス，question, answerを持つDataFrame
@@ -365,10 +365,9 @@ def main():
 
     # dataloader / model
     transform = transforms.Compose([
-        transforms.Resize((224, 224)),
         transforms.ToTensor()
     ])
-    train_dataset = VQADataset(df_path="./data/train.json", image_dir="./data/train", transform=transform)
+    train_dataset = VQADataset(df_path="./data/augmented_train/augmented_train.json", image_dir="./data/augmented_train", transform=transform)
     test_dataset = VQADataset(df_path="./data/valid.json", image_dir="./data/valid", transform=transform, answer=False)
     test_dataset.update_dict(train_dataset)
 
@@ -407,3 +406,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
